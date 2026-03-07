@@ -69,6 +69,12 @@ docker run -it --rm --network host bennett007030/querymind3
 ```
 *Note for macOS/Windows users*: If your database is running on `localhost` outside of Docker, use `host.docker.internal` instead of `localhost` when prompted for the database host.
 
+### One-Line Installer (Windows)
+
+```powershell
+irm https://raw.githubusercontent.com/harrison007123/querymind3/main/install.ps1 | iex
+```
+
 ### One-Line Installer (Linux / macOS / WSL)
 
 ```bash
