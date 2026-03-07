@@ -79,10 +79,6 @@ def _is_thinking_model(model: str) -> bool:
     return any(kw in model.lower() for kw in _THINKING_MODEL_KEYWORDS)
 
 
-def _normalize_groq_model(model: str) -> str:
-    return model.replace("/", "-") if "/" in model else model
-
-
 def _get_groq_variant(model_id: str) -> str:
     for m in GROQ_MODELS:
         if m["model"] == model_id:
@@ -101,7 +97,6 @@ def _call_groq(api_key: str, model: str, schema: str, question: str, db_type: st
         raise RuntimeError("The `groq` package is not installed. Run: pip install groq")
 
     client = Groq(api_key=api_key)
-    model = _normalize_groq_model(model)
     variant = _get_groq_variant(model)
     system_prompt = _build_system_prompt(db_type)
     user_content = USER_PROMPT_TEMPLATE.format(schema=schema, question=question)
