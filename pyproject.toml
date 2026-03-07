@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "querymind3"
+version = "3.0.0"
+description = "AI Natural Language → SQL Engine for the terminal"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+authors = [
+  { name = "QueryMind Contributors" },
+]
+keywords = ["sql", "ai", "nlp", "llm", "database", "cli", "openai", "groq"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Topic :: Database",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+  "typer>=0.12.0",
+  "rich>=13.7.0",
+  "sqlalchemy>=2.0.0",
+  "pandas>=2.0.0",
+  "prompt_toolkit>=3.0.0",
+  "requests>=2.31.0",
+  "PyMySQL>=1.1.0",
+  "psycopg2-binary>=2.9.0",
+  "groq>=0.11.0",
+]
+
+[project.scripts]
+querymind = "querymind.cli:run"
+
+[project.urls]
+Homepage = "https://github.com/querymind/querymind3"
+Documentation = "https://github.com/querymind/querymind3#readme"
+Issues = "https://github.com/querymind/querymind3/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["querymind*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
