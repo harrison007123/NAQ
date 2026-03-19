@@ -12,19 +12,19 @@ from prompt_toolkit.history import FileHistory
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 from prompt_toolkit.styles import Style
 
-from querymind import __version__
-from querymind.banner import print_banner, animated_startup, thinking_steps
-from querymind.config import prompt_for_config
-from querymind import db as database
-from querymind import schema_loader
-from querymind import ai_engine
-from querymind import executor
-from querymind import safety
-from querymind import utils
+from naq import __version__
+from naq.banner import print_banner, animated_startup, thinking_steps
+from naq.config import prompt_for_config
+from naq import db as database
+from naq import schema_loader
+from naq import ai_engine
+from naq import executor
+from naq import safety
+from naq import utils
 
 app = typer.Typer(
-    name="querymind",
-    help="QueryMind 3 — AI Natural Language → SQL Engine",
+    name="naq",
+    help="NAQ — AI Natural Language → SQL Engine",
     add_completion=False,
 )
 
@@ -32,7 +32,7 @@ console = Console()
 
 PROMPT_STYLE = Style.from_dict({"prompt": "bold ansicyan"})
 
-HISTORY_PATH = Path.home() / ".querymind" / "prompt_history"
+HISTORY_PATH = Path.home() / ".naq" / "prompt_history"
 
 HELP_TEXT = """
 [bold cyan]Commands[/bold cyan]
@@ -43,16 +43,16 @@ HELP_TEXT = """
   [bold green]history[/bold green]        Recent query history
   [bold green]history clear[/bold green]  Clear history
   [bold green]config[/bold green]         Re-enter credentials
-  [bold green]exit[/bold green]           Exit QueryMind 3
+  [bold green]exit[/bold green]           Exit NAQ
 
 [bold cyan]Natural Language Queries[/bold cyan]
 
-  [dim]QueryMind > show top 10 customers by revenue[/dim]
-  [dim]QueryMind > how many orders placed last month?[/dim]
-  [dim]QueryMind > list products with stock below 20[/dim]
+  [dim]NAQ > show top 10 customers by revenue[/dim]
+  [dim]NAQ > how many orders placed last month?[/dim]
+  [dim]NAQ > list products with stock below 20[/dim]
 
 [dim]─────────────────────────────────────────────────[/dim]
-  Developed by [bold magenta]Harrison Bennett J[/bold magenta]  ·  [dim]QueryMind v3.0.0[/dim]
+  Developed by [bold magenta]Harrison Bennett J[/bold magenta]  ·  [dim]NAQ v3.0.0[/dim]
 """
 
 
@@ -62,7 +62,7 @@ def _handle_command(command: str, cfg: dict, conn) -> bool:
     if cmd in ("exit", "quit", "q"):
         console.print()
         console.print(Rule(style="bright_black"))
-        console.print("  [bold cyan]Goodbye! 👋  QueryMind session ended.[/bold cyan]")
+        console.print("  [bold cyan]Goodbye! 👋  NAQ session ended.[/bold cyan]")
         console.print(Rule(style="bright_black"))
         console.print()
         database.disconnect()
@@ -70,7 +70,7 @@ def _handle_command(command: str, cfg: dict, conn) -> bool:
 
     if cmd == "help":
         console.print(
-            Panel(HELP_TEXT, border_style="cyan", title="[bold]QueryMind Help[/bold]",
+            Panel(HELP_TEXT, border_style="cyan", title="[bold]NAQ Help[/bold]",
                   box=__import__("rich.box", fromlist=["ROUNDED"]).ROUNDED, padding=(1, 2))
         )
         return True
@@ -184,7 +184,7 @@ def _main_loop(cfg: dict, conn) -> None:
         "Connecting to database",
         "Loading database schema",
         "Initializing AI engine",
-        "QueryMind ready",
+        "NAQ ready",
     ])
 
     schema = schema_loader.fetch_schema(conn, cfg)
@@ -213,12 +213,12 @@ def _main_loop(cfg: dict, conn) -> None:
     while True:
         try:
             user_input = session.prompt(
-                [("class:prompt", "\n  QueryMind > ")],
+                [("class:prompt", "\n  NAQ > ")],
             ).strip()
         except (KeyboardInterrupt, EOFError):
             console.print()
             console.print(Rule(style="bright_black"))
-            console.print("  [bold cyan]Goodbye! 👋  QueryMind session ended.[/bold cyan]")
+            console.print("  [bold cyan]Goodbye! 👋  NAQ session ended.[/bold cyan]")
             console.print(Rule(style="bright_black"))
             console.print()
             database.disconnect()
@@ -237,11 +237,11 @@ def main(
     version: bool = typer.Option(False, "--version", "-v", help="Print version and exit."),
     setup: bool = typer.Option(False, "--setup", help="Re-run setup wizard."),
 ) -> None:
-    """QueryMind 3 — Ask your database questions in plain English."""
+    """NAQ — Ask your database questions in plain English."""
     print_banner()
 
     if version:
-        console.print(f"  QueryMind [bold magenta]{__version__}[/bold magenta]")
+        console.print(f"  NAQ [bold magenta]{__version__}[/bold magenta]")
         raise typer.Exit(0)
 
     cfg = prompt_for_config()

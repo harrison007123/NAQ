@@ -9,7 +9,7 @@ No SQLAlchemy dependency.
 
 from typing import Dict, List
 from rich.console import Console
-from querymind.db import get_db_type
+from naq.db import get_db_type
 
 console = Console()
 

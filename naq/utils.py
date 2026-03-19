@@ -1,5 +1,5 @@
 """
-utils.py — Shared utility functions for QueryMind 3.
+utils.py — Shared utility functions for NAQ.
 
 Includes:
   - Query history management
@@ -20,7 +20,7 @@ from rich import box
 
 console = Console()
 
-HISTORY_FILE = Path.home() / ".querymind" / "history.json"
+HISTORY_FILE = Path.home() / ".naq" / "history.json"
 MAX_HISTORY_ENTRIES = 500
 
 

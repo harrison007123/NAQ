@@ -1,4 +1,4 @@
-# QueryMind 3
+# NAQ
 # A lightweight, containerized AI Natural Language -> SQL Engine
 
 # Use official Python lightweight image
@@ -14,9 +14,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the entire source code into the container
 COPY . .
 
-# Install QueryMind as a global command
+# Install NAQ as a global command
 RUN pip install --no-cache-dir .
 
-# By default, running the container will start the QueryMind REPL
+# By default, running the container will start the NAQ REPL
 # Need to use -it (interactive tty) when running docker
-ENTRYPOINT ["querymind"]
+ENTRYPOINT ["naq"]

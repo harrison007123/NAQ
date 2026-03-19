@@ -1,12 +1,12 @@
 <#
 .SYNOPSIS
-QueryMind 3 - One-Line Installer for Windows
-Usage: irm https://raw.githubusercontent.com/harrison007123/querymind3/main/install.ps1 | iex
+NAQ - One-Line Installer for Windows
+Usage: irm https://raw.githubusercontent.com/harrison007123/naq/main/install.ps1 | iex
 #>
 
 $ErrorActionPreference = "Stop"
 
-$REPO = "https://github.com/harrison007123/querymind3"
+$REPO = "https://github.com/harrison007123/naq"
 $ZIP_URL = "${REPO}/archive/refs/heads/main.zip"
 
 function error([string]$msg) { 
@@ -42,7 +42,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 & $PythonCmd -m pip install --upgrade pip --quiet 2>&1 | Out-Null
 
-# 3. Install QueryMind 3
+# 3. Install NAQ
 # Using .zip URL directly avoids requiring `git` to be installed on Windows
 & $PythonCmd -m pip install --user --upgrade $ZIP_URL --quiet 2>&1 | Out-Null
 if ($LASTEXITCODE -ne 0) {
@@ -50,11 +50,11 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 # 4. Verify Path
-$qmCmd = Get-Command "querymind" -ErrorAction SilentlyContinue
+$qmCmd = Get-Command "naq" -ErrorAction SilentlyContinue
 if (-not $qmCmd) {
     $UserBin = & $PythonCmd -m site --user-site
     $ScriptsBin = (Split-Path $UserBin -Parent) + "\Scripts"
-    Write-Host "  ⚠ querymind is installed but may not be on your PATH." -ForegroundColor Yellow
+    Write-Host "  ⚠ naq is installed but may not be on your PATH." -ForegroundColor Yellow
     Write-Host "  Ensure the following directory is in your System PATH:"
     Write-Host "      $ScriptsBin"
 }
@@ -62,8 +62,8 @@ if (-not $qmCmd) {
 # Done
 Write-Host ""
 Write-Host "══════════════════════════════════════════════════════" -ForegroundColor Green
-Write-Host "  ✓  QueryMind 3 installed successfully!" -ForegroundColor Green
+Write-Host "  ✓  NAQ installed successfully!" -ForegroundColor Green
 Write-Host "══════════════════════════════════════════════════════" -ForegroundColor Green
 Write-Host ""
-Write-Host "  Run 'querymind' in your terminal to get started." -ForegroundColor Cyan
+Write-Host "  Run 'naq' in your terminal to get started." -ForegroundColor Cyan
 Write-Host ""

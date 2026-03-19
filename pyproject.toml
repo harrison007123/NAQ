@@ -3,14 +3,14 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "querymind3"
+name = "naq"
 version = "3.0.0"
 description = "AI Natural Language → SQL Engine for the terminal"
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.9"
 authors = [
-  { name = "QueryMind Contributors" },
+  { name = "NAQ Contributors" },
 ]
 keywords = ["sql", "ai", "nlp", "llm", "database", "cli", "openai", "groq"]
 classifiers = [
@@ -39,16 +39,16 @@ dependencies = [
 ]
 
 [project.scripts]
-querymind = "querymind.cli:run"
+naq = "naq.cli:run"
 
 [project.urls]
-Homepage = "https://github.com/querymind/querymind3"
-Documentation = "https://github.com/querymind/querymind3#readme"
-Issues = "https://github.com/querymind/querymind3/issues"
+Homepage = "https://github.com/harrison007123/naq"
+Documentation = "https://github.com/harrison007123/naq#readme"
+Issues = "https://github.com/harrison007123/naq/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["querymind*"]
+include = ["naq*"]
 
 [tool.ruff]
 line-length = 100

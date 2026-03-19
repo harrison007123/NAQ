@@ -34,7 +34,7 @@ def prompt_for_config() -> dict:
         return prompt_for_config()
 
     if llm_provider == "groq":
-        from querymind.ai_engine import GROQ_MODELS
+        from naq.ai_engine import GROQ_MODELS
         console.print()
         console.print("  [bold]Select a Groq model:[/bold]")
         for i, m in enumerate(GROQ_MODELS, 1):

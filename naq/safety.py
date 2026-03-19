@@ -1,5 +1,5 @@
 """
-safety.py — SQL Safety Layer for QueryMind 3.
+safety.py — SQL Safety Layer for NAQ.
 
 Intercepts dangerous SQL statements and requires explicit user confirmation
 before allowing non-SELECT operations.
@@ -55,7 +55,7 @@ def check_sql(sql: str, *, allow_writes: bool = False) -> Tuple[bool, str]:
         raise SafetyViolation(
             f"[bold red]⛔  {matched} statements are permanently blocked by the safety layer.[/bold red]\n"
             "    These operations can cause irreversible data loss.\n"
-            "    To disable this protection, edit [cyan]~/.querymind/config.json[/cyan]."
+            "    To disable this protection, edit [cyan]~/.naq/config.json[/cyan]."
         )
 
     if _WARN_KEYWORDS.search(stripped) and not allow_writes:

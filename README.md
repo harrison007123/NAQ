@@ -1,14 +1,14 @@
-# QueryMind 3
+# NAQ
 
 <div align="center">
 
 ```
- ██████╗ ██╗   ██╗███████╗██████╗ ██╗   ██╗███╗   ███╗██╗███╗   ██╗██████╗
-██╔═══██╗██║   ██║██╔════╝██╔══██╗╚██╗ ██╔╝████╗ ████║██║████╗  ██║██╔══██╗
-██║   ██║██║   ██║█████╗  ██████╔╝ ╚████╔╝ ██╔████╔██║██║██╔██╗ ██║██║  ██║
-██║▄▄ ██║██║   ██║██╔══╝  ██╔══██╗  ╚██╔╝  ██║╚██╔╝██║██║██║╚██╗██║██║  ██║
-╚██████╔╝╚██████╔╝███████╗██║  ██║   ██║   ██║ ╚═╝ ██║██║██║ ╚████║██████╔╝
- ╚══▀▀═╝  ╚═════╝ ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═════╝
+███╗   ██╗ █████╗  ██████╗
+████╗  ██║██╔══██╗██╔═══██╗
+██╔██╗ ██║███████║██║   ██║
+██║╚██╗██║██╔══██║██║▄▄ ██║
+██║ ╚████║██║  ██║╚██████╔╝
+╚═╝  ╚═══╝╚═╝  ╚═╝ ╚══▀▀═╝
 ```
 
 **AI Natural Language → SQL Engine**
@@ -22,14 +22,14 @@
 
 ---
 
-## What is QueryMind 3?
+## What is NAQ?
 
-**QueryMind 3** is an open-source terminal AI assistant that lets you query your SQL databases using **plain English**.
+**NAQ** is an open-source terminal AI assistant that lets you query your SQL databases using **plain English**.
 
-No SQL knowledge required. Just describe what you want, and QueryMind generates and runs the query for you.
+No SQL knowledge required. Just describe what you want, and NAQ generates and runs the query for you.
 
 ```
-  QueryMind > show me the top 10 customers by total revenue
+  NAQ > show me the top 10 customers by total revenue
 
   ┌──────────────┬──────────────┐
   │ customer     │ revenue      │
@@ -62,36 +62,36 @@ No SQL knowledge required. Just describe what you want, and QueryMind generates 
 
 ### Run with Docker (Recommended)
 
-You can run QueryMind in an isolated container without installing Python dependencies on your host.
+You can run NAQ in an isolated container without installing Python dependencies on your host.
 
 ```bash
-docker run -it --rm --network host bennett007030/querymind3
+docker run -it --rm --network host bennett007030/naq
 ```
 *Note for macOS/Windows users*: If your database is running on `localhost` outside of Docker, use `host.docker.internal` instead of `localhost` when prompted for the database host.
 
 ### One-Line Installer (Windows)
 
 ```powershell
-irm https://raw.githubusercontent.com/harrison007123/querymind3/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/harrison007123/naq/main/install.ps1 | iex
 ```
 
 ### One-Line Installer (Linux / macOS / WSL)
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/harrison007123/querymind3/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/harrison007123/naq/main/install.sh | bash
 ```
 
 ### pip (All Platforms)
 
 ```bash
-pip install querymind3
+pip install naq
 ```
 
 ### Install from Source
 
 ```bash
-git clone https://github.com/harrison007123/querymind3.git
-cd querymind3
+git clone https://github.com/harrison007123/naq.git
+cd naq
 pip install -e .
 ```
 
@@ -100,7 +100,7 @@ pip install -e .
 ## Quick Start
 
 ```bash
-querymind
+naq
 ```
 
 On first run, the setup wizard will guide you through:
@@ -109,7 +109,7 @@ On first run, the setup wizard will guide you through:
 2. **API key** — Your OpenAI or Groq key
 3. **Database** — MySQL or PostgreSQL connection details
 
-Configuration is saved to `~/.querymind/config.json`.
+Configuration is saved to `~/.naq/config.json`.
 
 ---
 
@@ -118,11 +118,11 @@ Configuration is saved to `~/.querymind/config.json`.
 ### Natural Language Queries
 
 ```
-QueryMind > show top 10 customers by revenue
-QueryMind > how many orders were placed last month?
-QueryMind > list products with stock below 20
-QueryMind > which users signed up in the last 7 days?
-QueryMind > what is the average order value by country?
+NAQ > show top 10 customers by revenue
+NAQ > how many orders were placed last month?
+NAQ > list products with stock below 20
+NAQ > which users signed up in the last 7 days?
+NAQ > what is the average order value by country?
 ```
 
 ### Built-in Commands
@@ -135,14 +135,14 @@ QueryMind > what is the average order value by country?
 | `history` | View recent query history |
 | `history clear` | Clear query history |
 | `config` | Re-run the setup wizard |
-| `exit` / `quit` | Exit QueryMind |
+| `exit` / `quit` | Exit NAQ |
 
 ### CLI Flags
 
 ```bash
-querymind --version   # Print version
-querymind --setup     # Force re-run setup wizard
-querymind --help      # Show help
+naq --version   # Print version
+naq --setup     # Force re-run setup wizard
+naq --help      # Show help
 ```
 
 ---
@@ -150,8 +150,8 @@ querymind --help      # Show help
 ## Project Structure
 
 ```
-querymind3/
-├── querymind/
+naq/
+├── naq/
 │   ├── __init__.py        # Package metadata & version
 │   ├── cli.py             # Interactive REPL & Typer entry point
 │   ├── banner.py          # ASCII banner & startup display
@@ -186,7 +186,7 @@ querymind3/
 
 ## Configuration
 
-Config lives at `~/.querymind/config.json`:
+Config lives at `~/.naq/config.json`:
 
 ```json
 {
@@ -214,7 +214,7 @@ Supported LLM models:
 
 ## Safety
 
-QueryMind 3 has a built-in SQL safety layer:
+NAQ has a built-in SQL safety layer:
 
 - `DROP`, `TRUNCATE`, `ALTER` → **permanently blocked**
 - `DELETE`, `UPDATE`, `INSERT` → **requires explicit confirmation**
@@ -224,11 +224,11 @@ QueryMind 3 has a built-in SQL safety layer:
 
 ## Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request on [GitHub](https://github.com/querymind/querymind3).
+Contributions are welcome! Please open an issue or submit a pull request on [GitHub](https://github.com/harrison007123/naq).
 
 ```bash
-git clone https://github.com/harrison007123/querymind3.git
-cd querymind3
+git clone https://github.com/harrison007123/naq.git
+cd naq
 python -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"
@@ -238,4 +238,4 @@ pip install -e ".[dev]"
 
 ## License
 
-MIT © QueryMind Contributors — see [LICENSE](LICENSE).
+MIT © NAQ Contributors — see [LICENSE](LICENSE).

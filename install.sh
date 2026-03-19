@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# Usage: curl -sSL https://raw.githubusercontent.com/harrison007123/querymind3/main/install.sh | bash
+# Usage: curl -sSL https://raw.githubusercontent.com/harrison007123/naq/main/install.sh | bash
 
 set -euo pipefail
 
-REPO="https://github.com/harrison007123/querymind3"
+REPO="https://github.com/harrison007123/naq"
 PACKAGE_URL="${REPO}/archive/refs/heads/main.zip"
 MIN_PYTHON="3.9"
 
@@ -42,7 +42,7 @@ if ! "$PYTHON_CMD" -m pip --version &>/dev/null; then
 fi
 "$PYTHON_CMD" -m pip install --upgrade pip --quiet >/dev/null 2>&1 || true
 
-# ── 3. Install QueryMind 3 ────────────────────────────────────────
+# ── 3. Install NAQ ──────────────────────────────────────────────
 # Try standard user install first
 if ! "$PYTHON_CMD" -m pip install --user --upgrade "${PACKAGE_URL}" --quiet >/dev/null 2>&1; then
   # Fallback for Ubuntu 23.04+ / Debian 12+ (PEP 668 Externally Managed)
@@ -52,16 +52,16 @@ if ! "$PYTHON_CMD" -m pip install --user --upgrade "${PACKAGE_URL}" --quiet >/de
 fi
 
 # ── 4. Verify Path ────────────────────────────────────────────────
-if ! command -v querymind &>/dev/null; then
+if ! command -v naq &>/dev/null; then
   USER_BIN="$("$PYTHON_CMD" -m site --user-base)/bin"
-  if [ -f "${USER_BIN}/querymind" ]; then
-    warn "querymind is installed at ${USER_BIN} which may not be on your PATH."
+  if [ -f "${USER_BIN}/naq" ]; then
+    warn "naq is installed at ${USER_BIN} which may not be on your PATH."
     warn "Add the following to your shell profile:"
     echo "    export PATH=\"${USER_BIN}:\$PATH\""
   else
     # Some distros use ~/.local/bin directly
-    if [ -f "$HOME/.local/bin/querymind" ]; then
-      warn "querymind is installed at $HOME/.local/bin which may not be on your PATH."
+    if [ -f "$HOME/.local/bin/naq" ]; then
+      warn "naq is installed at $HOME/.local/bin which may not be on your PATH."
       warn "Add the following to your shell profile:"
       echo "    export PATH=\"$HOME/.local/bin:\$PATH\""
     fi
@@ -71,8 +71,8 @@ fi
 # ── Done ──────────────────────────────────────────────────────────
 echo ""
 echo -e "${GREEN}${BOLD}══════════════════════════════════════════════════════${RESET}"
-echo -e "${GREEN}${BOLD}  ✓  QueryMind 3 installed successfully!${RESET}"
+echo -e "${GREEN}${BOLD}  ✓  NAQ installed successfully!${RESET}"
 echo -e "${GREEN}${BOLD}══════════════════════════════════════════════════════${RESET}"
 echo ""
-echo -e "  Run ${CYAN}${BOLD}querymind${RESET} in your terminal to get started."
+echo -e "  Run ${CYAN}${BOLD}naq${RESET} in your terminal to get started."
 echo ""

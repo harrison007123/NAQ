@@ -1,6 +1,6 @@
 import pandas as pd
 from rich.console import Console
-from querymind.db import get_db_type
+from naq.db import get_db_type
 
 console = Console()
 

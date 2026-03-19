@@ -23,12 +23,12 @@ from rich import box
 console = Console()
 
 BANNER = r"""
- ██████╗ ██╗   ██╗███████╗██████╗ ██╗   ██╗███╗   ███╗██╗███╗   ██╗██████╗
-██╔═══██╗██║   ██║██╔════╝██╔══██╗╚██╗ ██╔╝████╗ ████║██║████╗  ██║██╔══██╗
-██║   ██║██║   ██║█████╗  ██████╔╝ ╚████╔╝ ██╔████╔██║██║██╔██╗ ██║██║  ██║
-██║▄▄ ██║██║   ██║██╔══╝  ██╔══██╗  ╚██╔╝  ██║╚██╔╝██║██║██║╚██╗██║██║  ██║
-╚██████╔╝╚██████╔╝███████╗██║  ██║   ██║   ██║ ╚═╝ ██║██║██║ ╚████║██████╔╝
- ╚══▀▀═╝  ╚═════╝ ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═════╝
+███╗   ██╗ █████╗  ██████╗
+████╗  ██║██╔══██╗██╔═══██╗
+██╔██╗ ██║███████║██║   ██║
+██║╚██╗██║██╔══██║██║▄▄ ██║
+██║ ╚████║██║  ██║╚██████╔╝
+╚═╝  ╚═══╝╚═╝  ╚═╝ ╚══▀▀═╝
 """
 
 
@@ -37,7 +37,7 @@ def print_banner() -> None:
     console.print(Text(BANNER, style="bold cyan"))
 
     title_line = Text()
-    title_line.append("  QueryMind ", style="bold white")
+    title_line.append("  NAQ ", style="bold white")
     title_line.append("3", style="bold magenta")
     title_line.append("  ·  ", style="dim white")
     title_line.append("AI Natural Language ", style="bold green")
