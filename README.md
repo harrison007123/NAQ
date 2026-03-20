@@ -49,7 +49,7 @@ No SQL knowledge required. Just describe what you want, and NAQ generates and ru
 |---|---|
 | 🗣️ Natural Language | Ask questions in plain English |
 | 🤖 Multi-LLM | Supports **OpenAI** (GPT-4o, GPT-4o-mini) and **Groq** (Llama 3, Mixtral) |
-| 🗄️ Multi-Database | **MySQL** and **PostgreSQL** |
+| 🗄️ Multi-Database | **MySQL** |
 | 🔍 Schema Awareness | Auto-loads your database schema for accurate SQL generation |
 | 🛡️ Safety Layer | Blocks `DROP`, `TRUNCATE`, `ALTER`; confirms `DELETE`, `UPDATE` |
 | 📊 Rich Tables | Beautiful terminal output with Rich |
@@ -60,32 +60,6 @@ No SQL knowledge required. Just describe what you want, and NAQ generates and ru
 
 ## Installation
 
-### Run with Docker (Recommended)
-
-You can run NAQ in an isolated container without installing Python dependencies on your host.
-
-```bash
-docker run -it --rm --network host bennett007030/naq
-```
-*Note for macOS/Windows users*: If your database is running on `localhost` outside of Docker, use `host.docker.internal` instead of `localhost` when prompted for the database host.
-
-### One-Line Installer (Windows)
-
-```powershell
-irm https://raw.githubusercontent.com/harrison007123/naq/main/install.ps1 | iex
-```
-
-### One-Line Installer (Linux / macOS / WSL)
-
-```bash
-curl -sSL https://raw.githubusercontent.com/harrison007123/naq/main/install.sh | bash
-```
-
-### pip (All Platforms)
-
-```bash
-pip install naq
-```
 
 ### Install from Source
 
@@ -109,7 +83,6 @@ On first run, the setup wizard will guide you through:
 2. **API key** — Your OpenAI or Groq key
 3. **Database** — MySQL or PostgreSQL connection details
 
-Configuration is saved to `~/.naq/config.json`.
 
 ---
 
@@ -162,11 +135,12 @@ naq/
 │   ├── ai_engine.py       # LLM integration (OpenAI / Groq)
 │   ├── executor.py        # SQL execution → pandas DataFrame
 │   └── utils.py           # History, Rich table renderer
-├── install.sh             # One-line bash installer
 ├── pyproject.toml         # PEP 517 build config
-├── requirements.txt
+├── requirements.txt       
 ├── LICENSE
-└── README.md
+├── README.md
+
+
 ```
 
 ---
@@ -184,27 +158,6 @@ naq/
 
 ---
 
-## Configuration
-
-Config lives at `~/.naq/config.json`:
-
-```json
-{
-  "llm": {
-    "provider": "openai",
-    "api_key": "sk-...",
-    "model": "gpt-4o-mini"
-  },
-  "database": {
-    "type": "mysql",
-    "host": "localhost",
-    "port": 3306,
-    "user": "root",
-    "password": "...",
-    "name": "mydb"
-  }
-}
-```
 
 Supported LLM models:
 - **OpenAI**: `gpt-4o`, `gpt-4o-mini`, `gpt-4-turbo`, `gpt-3.5-turbo`

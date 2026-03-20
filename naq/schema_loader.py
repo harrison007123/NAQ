@@ -9,6 +9,7 @@ No SQLAlchemy dependency.
 
 from typing import Dict, List
 from rich.console import Console
+from sqlalchemy import schema
 from naq.db import get_db_type
 
 console = Console()
@@ -68,6 +69,7 @@ def _fetch_schema_mysql(conn, db_name: str) -> dict:
         schema[table] = {"columns": columns, "foreign_keys": fks}
 
     cur.close()
+
     return schema
 
 
@@ -163,15 +165,8 @@ def fetch_schema(conn, cfg: dict, force_refresh: bool = False) -> dict:
     return raw
 
 
-def schema_to_text(conn, cfg: dict) -> str:
-    """Return a compact LLM-friendly text representation of the schema."""
-    db_name = cfg["database"]["name"]
-    if db_name not in _schema_cache:
-        fetch_schema(conn, cfg)
-    return _schema_cache[db_name]["text"]
-
-
 def _schema_to_text(schema: dict) -> str:
+    
     lines: List[str] = []
     for table, info in schema.items():
         col_parts = []
@@ -187,6 +182,17 @@ def _schema_to_text(schema: dict) -> str:
             ]
             lines.append(f"  Foreign Keys: {', '.join(fk_parts)}")
     return "\n".join(lines)
+def log(message):
+    with open("output.log", "a") as f:
+        f.write(message + "\n")
+
+def schema_to_text(schema):
+    """Return a compact LLM-friendly text representation of the schema."""
+    x=_schema_to_text(schema)
+    log(x)
+    return x 
+
+
 
 
 def clear_cache() -> None:

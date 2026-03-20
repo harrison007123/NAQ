@@ -2,6 +2,7 @@ import re
 from typing import Optional
 import requests
 from rich.console import Console
+from naq import db
 
 console = Console()
 
@@ -24,6 +25,9 @@ GROQ_MODELS = [
 ]
 
 _THINKING_MODEL_KEYWORDS = ("qwen3", "deepseek-r1", "r1-", "thinking", "gpt-oss")
+def log(message):
+    with open("output.log", "w") as f:
+        f.write(message + "\n")
 
 USER_PROMPT_TEMPLATE = """Database schema:
 {schema}
@@ -32,7 +36,6 @@ User question:
 {question}
 
 Return only the SQL query."""
-
 
 def _build_system_prompt(db_type: str) -> str:
     dialect_map = {"mysql": "MySQL", "postgresql": "PostgreSQL"}
@@ -58,11 +61,7 @@ You will receive a natural language request from the user.
 
 Your task is to generate a valid SQL query that fulfills the request.
 
-Instructions:
-1. First, understand the user's intent.
-2. Carefully examine the database schema provided below.
-3. Identify the relevant table(s) and column(s) required.
-4. Then construct the SQL query.
+
 
 Rules:
 - Return ONLY the raw SQL query. No explanations, comments, or markdown.
@@ -73,6 +72,10 @@ Rules:
 - Use proper JOINs when multiple tables are involved.
 - Apply filtering (WHERE), grouping (GROUP BY), aggregation (COUNT, SUM, etc.), and ordering (ORDER BY) when appropriate.
 - Ensure the query is syntactically correct for {dialect}.
+ 
+IMPORTANT NOTE:
+ - Don't use any previous history always use fresh generation, use correct words given as per the users
+
 
 """
 
@@ -98,7 +101,6 @@ def _get_groq_variant(model_id: str) -> str:
         return "compound"
     return "standard"
 
-from naq.schema_loader import fetch_schema,schema_to_text
 def _call_groq(api_key: str, model: str, schema: str, question: str, db_type: str = "mysql") -> str:
     try:
         from groq import Groq
@@ -106,10 +108,13 @@ def _call_groq(api_key: str, model: str, schema: str, question: str, db_type: st
         raise RuntimeError("The `groq` package is not installed. Run: pip install groq")
 
     client = Groq(api_key=api_key)
+    user_content = USER_PROMPT_TEMPLATE.format(schema=schema, question=question)
     variant = _get_groq_variant(model)
     system_prompt = _build_system_prompt(db_type)
-    user_content = USER_PROMPT_TEMPLATE.format(schema=schema, question=question)
-    combined = system_prompt + "\n\n" + "The schema is: "+"\n"+user_content
+    combined = system_prompt + "\n\n"+'''
+Below is the schema for all the table
+
+'''+user_content
 
     if variant == "reasoning":
         completion = client.chat.completions.create(

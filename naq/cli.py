@@ -1,6 +1,5 @@
 import sys
 import time
-from pathlib import Path
 
 import typer
 from rich.console import Console
@@ -8,8 +7,6 @@ from rich.panel import Panel
 from rich.syntax import Syntax
 from rich.rule import Rule
 from prompt_toolkit import PromptSession
-from prompt_toolkit.history import FileHistory
-from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 from prompt_toolkit.styles import Style
 
 from naq import __version__
@@ -21,6 +18,11 @@ from naq import ai_engine
 from naq import executor
 from naq import safety
 from naq import utils
+from naq import db
+
+def log(message):
+    with open("output.log", "a") as f:
+        f.write(message + "\n")
 
 app = typer.Typer(
     name="naq",
@@ -32,7 +34,7 @@ console = Console()
 
 PROMPT_STYLE = Style.from_dict({"prompt": "bold ansicyan"})
 
-HISTORY_PATH = Path.home() / ".naq" / "prompt_history"
+#HISTORY_PATH = Path.home() / ".naq" / "prompt_history"
 
 HELP_TEXT = """
 [bold cyan]Commands[/bold cyan]
@@ -40,8 +42,6 @@ HELP_TEXT = """
   [bold green]help[/bold green]           Show this help
   [bold green]schema[/bold green]         Display database schema
   [bold green]schema refresh[/bold green] Reload schema from database
-  [bold green]history[/bold green]        Recent query history
-  [bold green]history clear[/bold green]  Clear history
   [bold green]config[/bold green]         Re-enter credentials
   [bold green]exit[/bold green]           Exit NAQ
 
@@ -88,26 +88,6 @@ def _handle_command(command: str, cfg: dict, conn) -> bool:
         console.print("  [bold green]✓[/bold green] Schema cache refreshed.")
         return True
 
-    if cmd == "history":
-        entries = utils.get_history(limit=20)
-        if not entries:
-            console.print("  [dim]No history yet.[/dim]")
-            return True
-        console.print()
-        console.print(Rule("[bold cyan]  Query History  [/bold cyan]", style="cyan"))
-        for i, entry in enumerate(entries, 1):
-            ts = entry.get("ts", "")[:19].replace("T", " ")
-            q = utils.truncate_string(entry.get("question", ""), 60)
-            sql_short = utils.truncate_string(entry.get("sql", ""), 80)
-            console.print(f"  [dim]{i:2}. [{ts}][/dim] [white]{q}[/white]")
-            console.print(f"  [dim]      SQL: {sql_short}[/dim]")
-        console.print()
-        return True
-
-    if cmd == "history clear":
-        utils.clear_history()
-        console.print("  [bold green]✓[/bold green] History cleared.")
-        return True
 
     if cmd == "config":
         console.print()
@@ -137,7 +117,7 @@ def _run_nl_query(question: str, cfg: dict, conn, schema_text: str) -> None:
         ])
 
         sql = ai_engine.generate_sql(cfg, schema_text, question)
-        if not sql:
+        if not sql or not str(sql).strip():
             console.print("  [yellow]⚠  The LLM returned an empty response. Please rephrase.[/yellow]")
             return
 
@@ -165,9 +145,9 @@ def _run_nl_query(question: str, cfg: dict, conn, schema_text: str) -> None:
 
         result = executor.execute_query(conn, sql)
 
-        utils.render_dataframe(result.df, title=f"Results — {question[:60]}")
+        utils.render_dataframe(result.df, title=f"")#Results — {question[:60]}
 
-        utils.add_to_history(question, sql)
+        #utils.add_to_history(question, sql)
 
         console.print(Rule(style="bright_black"))
 
@@ -187,8 +167,8 @@ def _main_loop(cfg: dict, conn) -> None:
         "NAQ ready",
     ])
 
-    schema = schema_loader.fetch_schema(conn, cfg)
-    schema_text = schema_loader.schema_to_text(conn, cfg)
+    schema = schema_loader.fetch_schema(conn, cfg,force_refresh=True)
+    schema_text = schema_loader.schema_to_text(schema)
     table_count = len(schema)
 
     console.print(
@@ -202,19 +182,20 @@ def _main_loop(cfg: dict, conn) -> None:
     )
     console.print()
 
-    HISTORY_PATH.parent.mkdir(parents=True, exist_ok=True)
+    #HISTORY_PATH.parent.mkdir(parents=True, exist_ok=True)
     session: PromptSession = PromptSession(
-        history=FileHistory(str(HISTORY_PATH)),
-        auto_suggest=AutoSuggestFromHistory(),
         style=PROMPT_STYLE,
         mouse_support=False,
     )
 
     while True:
+        
         try:
             user_input = session.prompt(
                 [("class:prompt", "\n  NAQ > ")],
             ).strip()
+            schema = schema_loader.fetch_schema(conn, cfg,force_refresh=True)
+            schema_text = schema_loader.schema_to_text(schema)
         except (KeyboardInterrupt, EOFError):
             console.print()
             console.print(Rule(style="bright_black"))
@@ -229,6 +210,9 @@ def _main_loop(cfg: dict, conn) -> None:
 
         handled = _handle_command(user_input, cfg, conn)
         if not handled:
+            '''schema = schema_loader.fetch_schema(conn, cfg,force_refresh=True)
+            schema_text = schema_loader.schema_to_text(schema)'''
+            
             _run_nl_query(user_input, cfg, conn, schema_text)
 
 

@@ -1,18 +1,8 @@
 """
 utils.py — Shared utility functions for NAQ.
-
-Includes:
-  - Query history management
-  - Rich table renderer for DataFrames
-  - Miscellaneous helpers
 """
 
-import json
-import os
-from datetime import datetime
-from pathlib import Path
-from typing import List, Optional
-
+from typing import Optional
 import pandas as pd
 from rich.console import Console
 from rich.table import Table
@@ -20,56 +10,8 @@ from rich import box
 
 console = Console()
 
-HISTORY_FILE = Path.home() / ".naq" / "history.json"
-MAX_HISTORY_ENTRIES = 500
-
-
-# ── History ───────────────────────────────────────────────────────────────────
-
-
-def _load_history_raw() -> List[dict]:
-    if not HISTORY_FILE.exists():
-        return []
-    try:
-        with open(HISTORY_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except (json.JSONDecodeError, OSError):
-        return []
-
-
-def _save_history_raw(entries: List[dict]) -> None:
-    HISTORY_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(HISTORY_FILE, "w", encoding="utf-8") as f:
-        json.dump(entries[-MAX_HISTORY_ENTRIES:], f, indent=2, ensure_ascii=False)
-
-
-def add_to_history(question: str, sql: str) -> None:
-    """Save a query pair to history."""
-    entries = _load_history_raw()
-    entries.append(
-        {
-            "ts": datetime.utcnow().isoformat(),
-            "question": question,
-            "sql": sql,
-        }
-    )
-    _save_history_raw(entries)
-
-
-def get_history(limit: int = 20) -> List[dict]:
-    """Return the most recent *limit* history entries (newest first)."""
-    entries = _load_history_raw()
-    return list(reversed(entries[-limit:]))
-
-
-def clear_history() -> None:
-    """Delete all saved history."""
-    if HISTORY_FILE.exists():
-        HISTORY_FILE.unlink()
-
 
 # ── Rich Table Renderer ───────────────────────────────────────────────────────
-
 
 def render_dataframe(df: pd.DataFrame, title: Optional[str] = None, max_rows: int = 200) -> None:
     """
@@ -79,7 +21,6 @@ def render_dataframe(df: pd.DataFrame, title: Optional[str] = None, max_rows: in
         console.print("  [dim italic]No results returned.[/dim italic]")
         return
 
-    # Truncate very large results
     truncated = len(df) > max_rows
     display_df = df.head(max_rows)
 
@@ -113,7 +54,6 @@ def render_dataframe(df: pd.DataFrame, title: Optional[str] = None, max_rows: in
 
 
 # ── Schema Pretty-Printer ─────────────────────────────────────────────────────
-
 
 def print_schema(schema: dict) -> None:
     """Print the database schema as a rich table."""
@@ -153,7 +93,6 @@ def print_schema(schema: dict) -> None:
 
 
 # ── Misc ──────────────────────────────────────────────────────────────────────
-
 
 def truncate_string(s: str, max_len: int = 80) -> str:
     return s if len(s) <= max_len else s[: max_len - 3] + "…"

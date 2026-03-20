@@ -62,7 +62,7 @@ def prompt_for_config() -> dict:
     db_name     = Prompt.ask("  Database name").strip()
     console.print()
 
-    return {
+    out= {
         "llm": {
             "provider": llm_provider,
             "api_key":  api_key,
@@ -77,7 +77,7 @@ def prompt_for_config() -> dict:
             "name":     db_name,
         },
     }
-
+    return out
 
 def config_exists() -> bool:
     return False
