@@ -19,4 +19,4 @@ RUN pip install --no-cache-dir .
 
 # By default, running the container will start the NAQ REPL
 # Need to use -it (interactive tty) when running docker
-ENTRYPOINT ["naq"]
+ENTRYPOINT ["NAQ"]

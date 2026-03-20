@@ -31,8 +31,8 @@ htmlcov/
 *.whl
 MANIFEST
 
-# QueryMind runtime data (user-specific)
-~/.querymind/
+# NAQ runtime data (user-specific)
+~/.NAQ/
 
 # OS
 .DS_Store

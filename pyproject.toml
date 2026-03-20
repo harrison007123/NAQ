@@ -10,7 +10,7 @@ readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.9"
 authors = [
-  { name = "NAQ Contributors" },
+  { name = "naq Contributors" },
 ]
 keywords = ["sql", "ai", "nlp", "llm", "database", "cli", "openai", "groq"]
 classifiers = [
@@ -42,9 +42,9 @@ dependencies = [
 naq = "naq.cli:run"
 
 [project.urls]
-Homepage = "https://github.com/harrison007123/naq"
-Documentation = "https://github.com/harrison007123/naq#readme"
-Issues = "https://github.com/harrison007123/naq/issues"
+Homepage = "https://github.com/harrison007123/NAQ"
+Documentation = "https://github.com/harrison007123/NAQ#readme"
+Issues = "https://github.com/harrison007123/NAQ/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]
