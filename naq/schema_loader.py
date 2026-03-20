@@ -18,7 +18,6 @@ _schema_cache: Dict[str, dict] = {}
 
 
 # ── MySQL Schema ──────────────────────────────────────────────────────────────
-
 def _fetch_schema_mysql(conn, db_name: str) -> dict:
     cur = conn.cursor(dictionary=True)
     schema: Dict[str, dict] = {}

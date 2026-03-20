@@ -34,8 +34,8 @@ BANNER = r"""
 
 def print_banner() -> None:
     console.print()
-    console.print(Text(BANNER, style="bold cyan"))
-
+    banner=Text(BANNER, style="bold cyan")
+    console.print(Align.center(banner))
     title_line = Text()
     title_line.append("  NAQ ", style="bold white")
     title_line.append("3", style="bold magenta")
@@ -43,7 +43,7 @@ def print_banner() -> None:
     title_line.append("AI Natural Language ", style="bold green")
     title_line.append("→ ", style="bold yellow")
     title_line.append("SQL Engine", style="bold green")
-    console.print(title_line)
+    console.print(Align.center(title_line))
     console.print()
 
     info_left  = Text("  ⚡ OpenAI  ·  Groq LLM", style="dim cyan")

@@ -54,22 +54,25 @@ def _build_system_prompt(db_type: str) -> str:
 
 Target database dialect: {dialect}
 
-You will receive only a natural language request from the user.
+You will receive a natural language request from the user.
 
 Your task is to generate a valid SQL query that fulfills the request.
 
-Rules:
+Instructions:
+1. First, understand the user's intent.
+2. Carefully examine the database schema provided below.
+3. Identify the relevant table(s) and column(s) required.
+4. Then construct the SQL query.
 
-* Return ONLY the raw SQL query. No explanations, comments, or markdown.
-* Infer the correct table names and column names automatically from the database.
-* Determine the correct SQL operation (SELECT, INSERT, UPDATE, DELETE) based on the user request.
-* Use proper JOINs when multiple tables are required.
-* Ensure the query is syntactically correct for {dialect}.
-* Prefer SELECT queries unless the user clearly asks to modify data.
-* Use aggregation, filtering, grouping, and ordering when appropriate.
-* Assume reasonable column names if needed based on common database conventions.
-Output:
-SQL Query
+Rules:
+- Return ONLY the raw SQL query. No explanations, comments, or markdown.
+- Use ONLY tables and columns present in the given schema.
+- Do NOT assume or hallucinate any table or column names.
+- Determine the correct SQL operation (SELECT, INSERT, UPDATE, DELETE) based on user intent.
+- Prefer SELECT queries unless the user explicitly requests data modification.
+- Use proper JOINs when multiple tables are involved.
+- Apply filtering (WHERE), grouping (GROUP BY), aggregation (COUNT, SUM, etc.), and ordering (ORDER BY) when appropriate.
+- Ensure the query is syntactically correct for {dialect}.
 
 """
 
@@ -95,7 +98,7 @@ def _get_groq_variant(model_id: str) -> str:
         return "compound"
     return "standard"
 
-
+from naq.schema_loader import fetch_schema,schema_to_text
 def _call_groq(api_key: str, model: str, schema: str, question: str, db_type: str = "mysql") -> str:
     try:
         from groq import Groq
@@ -106,9 +109,9 @@ def _call_groq(api_key: str, model: str, schema: str, question: str, db_type: st
     variant = _get_groq_variant(model)
     system_prompt = _build_system_prompt(db_type)
     user_content = USER_PROMPT_TEMPLATE.format(schema=schema, question=question)
+    combined = system_prompt + "\n\n" + "The schema is: "+"\n"+user_content
 
     if variant == "reasoning":
-        combined = system_prompt + "\n\n" + user_content
         completion = client.chat.completions.create(
             model=model,
             messages=[{"role": "user", "content": combined}],
@@ -123,8 +126,7 @@ def _call_groq(api_key: str, model: str, schema: str, question: str, db_type: st
         completion = client.chat.completions.create(
             model=model,
             messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_content},
+                {"role": "system", "content": combined},
             ],
             temperature=1,
             max_completion_tokens=1024,
@@ -137,8 +139,7 @@ def _call_groq(api_key: str, model: str, schema: str, question: str, db_type: st
         completion = client.chat.completions.create(
             model=model,
             messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_content},
+                {"role": "system", "content": combined},
             ],
             temperature=1,
             max_completion_tokens=1024,

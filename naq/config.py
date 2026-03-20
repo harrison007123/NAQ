@@ -4,7 +4,7 @@ from rich.prompt import Prompt
 
 console = Console()
 
-SUPPORTED_DB_TYPES = ["mysql", "postgresql"]
+SUPPORTED_DB_TYPES = ["mysql"]
 SUPPORTED_LLM_PROVIDERS = ["openai", "groq"]
 
 
@@ -52,11 +52,11 @@ def prompt_for_config() -> dict:
     console.print("[bold cyan]── Database Configuration ──[/bold cyan]")
     db_type = ""
     while db_type not in SUPPORTED_DB_TYPES:
-        db_type = Prompt.ask("  Database type", choices=SUPPORTED_DB_TYPES, default="mysql").lower()
+        db_type = Prompt.ask("  Database type", choices=SUPPORTED_DB_TYPES).lower()
 
-    db_host     = Prompt.ask("  Host", default="localhost").strip()
-    db_port_def = "3306" if db_type == "mysql" else "5432"
-    db_port     = Prompt.ask("  Port", default=db_port_def).strip()
+    db_host     = Prompt.ask("  Host",).strip()
+    db_port_def = "3306"
+    db_port     = Prompt.ask("  Port",).strip()
     db_user     = Prompt.ask("  Username").strip()
     db_password = Prompt.ask("  Password", password=True)
     db_name     = Prompt.ask("  Database name").strip()
