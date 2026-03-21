@@ -53,8 +53,6 @@ No SQL knowledge required. Just describe what you want, and NAQ generates and ru
 | 🔍 Schema Awareness | Auto-loads your database schema for accurate SQL generation |
 | 🛡️ Safety Layer | Blocks `DROP`, `TRUNCATE`, `ALTER`; confirms `DELETE`, `UPDATE` |
 | 📊 Rich Tables | Beautiful terminal output with Rich |
-| 🕐 History | Persistent query history with arrow-key recall |
-| 🔧 Interactive REPL | Full interactive terminal with auto-suggestions |
 
 ---
 
@@ -64,7 +62,7 @@ No SQL knowledge required. Just describe what you want, and NAQ generates and ru
 ### Install from Source
 
 ```bash
-git clone https://github.com/harrison007123/naq.git
+git clone https://github.com/harrison007123/NAQ.git
 cd naq
 pip install -e .
 ```
@@ -105,8 +103,6 @@ NAQ > what is the average order value by country?
 | `help` | Show all available commands |
 | `schema` | Display full database schema |
 | `schema refresh` | Force reload schema from database |
-| `history` | View recent query history |
-| `history clear` | Clear query history |
 | `config` | Re-run the setup wizard |
 | `exit` / `quit` | Exit NAQ |
 
@@ -177,10 +173,10 @@ NAQ has a built-in SQL safety layer:
 
 ## Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request on [GitHub](https://github.com/harrison007123/naq).
+Contributions are welcome! Please open an issue or submit a pull request on [GitHub](https://github.com/harrison007123/NAQ.git).
 
 ```bash
-git clone https://github.com/harrison007123/naq.git
+git clone https://github.com/harrison007123/NAQ.git
 cd naq
 python -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate

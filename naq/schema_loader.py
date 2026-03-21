@@ -74,7 +74,8 @@ def _fetch_schema_mysql(conn, db_name: str) -> dict:
 
 
 # ── PostgreSQL Schema ─────────────────────────────────────────────────────────
-
+def load_all_tables(conn,db_name):
+    pass
 def _fetch_schema_postgresql(conn, db_name: str) -> dict:
     cur = conn.cursor()
     schema: Dict[str, dict] = {}

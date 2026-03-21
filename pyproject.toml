@@ -36,6 +36,7 @@ dependencies = [
   "mysql-connector-python>=8.3.0",
   "psycopg2-binary>=2.9.0",
   "groq>=0.11.0",
+  "web-browser>=0.0.1"
 ]
 
 [project.scripts]

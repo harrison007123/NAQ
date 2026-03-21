@@ -19,6 +19,7 @@ from naq import executor
 from naq import safety
 from naq import utils
 from naq import db
+from naq import analytics
 
 def log(message):
     with open("output.log", "a") as f:
@@ -74,6 +75,10 @@ def _handle_command(command: str, cfg: dict, conn) -> bool:
                   box=__import__("rich.box", fromlist=["ROUNDED"]).ROUNDED, padding=(1, 2))
         )
         return True
+    if cmd=="analytic":
+        time.sleep(2)
+        analytics.launch_dashboard()
+
 
     if cmd == "schema":
         console.print()

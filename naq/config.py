@@ -1,7 +1,7 @@
 from typing import Optional
 from rich.console import Console
 from rich.prompt import Prompt
-
+import json
 console = Console()
 
 SUPPORTED_DB_TYPES = ["mysql"]
@@ -77,6 +77,8 @@ def prompt_for_config() -> dict:
             "name":     db_name,
         },
     }
+    with open("config.json","w") as f:
+        json.dump(out["database"],f,indent=4)
     return out
 
 def config_exists() -> bool:
