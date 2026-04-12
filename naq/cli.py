@@ -207,6 +207,14 @@ def _main_loop(cfg: dict, conn) -> None:
         if not user_input:
             continue
 
+        if user_input.lower() == "open browser":
+            try:
+                from naq import web_server
+                web_server.start_server(cfg, conn, schema_text)
+            except Exception as e:
+                console.print(f"  [bold red]✗ Failed to launch browser:[/bold red] {e}")
+            continue
+
         handled = _handle_command(user_input, cfg, conn)
         if not handled:
             '''schema = schema_loader.fetch_schema(conn, cfg,force_refresh=True)

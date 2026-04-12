@@ -380,3 +380,478 @@ CREATE TRIGGER check_price BEFORE INSERT ON car FOR EACH ROW BEGIN IF NEW.price 
 [EXEC] Executing: 'DROP TRIGGER IF EXISTS check_price'
 
 [EXEC] Executing: "CREATE TRIGGER check_price BEFORE INSERT ON car FOR EACH ROW BEGIN IF NEW.price <= 50000 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Price must be above 50000'; END IF; END;"
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: car
+  Columns: sno int, name varchar(255), cc int, price decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: car
+  Columns: sno int, name varchar(255), cc int, price decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+=== Raw LLM Response ===
+["SHOW TABLES"]
+=== Cleaned LLM Response ===
+["SHOW TABLES"]
+=== END ===
+[PARSE] json.loads direct SUCCESS: 1 queries
+[PARSE] Query 1: 'SHOW TABLES'
+
+=== Parsed Queries (1) ===
+
+--- Query 1 ---
+SHOW TABLES
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SHOW TABLES'
+
+[EXEC] Executing: 'SHOW TABLES'
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: car
+  Columns: sno int, name varchar(255), cc int, price decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+=== Raw LLM Response ===
+["SHOW TABLES;"]
+=== Cleaned LLM Response ===
+["SHOW TABLES;"]
+=== END ===
+[PARSE] json.loads direct SUCCESS: 1 queries
+[PARSE] Query 1: 'SHOW TABLES;'
+
+=== Parsed Queries (1) ===
+
+--- Query 1 ---
+SHOW TABLES;
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SHOW TABLES;'
+
+[EXEC] Executing: 'SHOW TABLES;'
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SHOW TABLES;'
+
+[EXEC] Executing: 'SHOW TABLES;'
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SHOW TABLES;'
+
+[EXEC] Executing: 'SHOW TABLES;'
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SHOW TABLES;'
+
+[EXEC] Executing: 'SHOW TABLES;'
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SHOW TABLES;'
+
+[EXEC] Executing: 'SHOW TABLES;'
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SHOW TABLES;'
+
+[EXEC] Executing: 'SHOW TABLES;'
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SHOW TABLES;'
+
+[EXEC] Executing: 'SHOW TABLES;'
+=== Raw LLM Response ===
+["SELECT * FROM tennis"]
+=== Cleaned LLM Response ===
+["SELECT * FROM tennis"]
+=== END ===
+[PARSE] json.loads direct SUCCESS: 1 queries
+[PARSE] Query 1: 'SELECT * FROM tennis'
+
+=== Parsed Queries (1) ===
+
+--- Query 1 ---
+SELECT * FROM tennis
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SELECT * FROM tennis'
+
+[EXEC] Executing: 'SELECT * FROM tennis'
+=== Raw LLM Response ===
+["CREATE TABLE human (sno INT, name VARCHAR(255));"]
+=== Cleaned LLM Response ===
+["CREATE TABLE human (sno INT, name VARCHAR(255));"]
+=== END ===
+[PARSE] json.loads direct SUCCESS: 1 queries
+[PARSE] Query 1: 'CREATE TABLE human (sno INT, name VARCHAR(255));'
+
+=== Parsed Queries (1) ===
+
+--- Query 1 ---
+CREATE TABLE human (sno INT, name VARCHAR(255));
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'CREATE TABLE human (sno INT, name VARCHAR(255));'
+
+[EXEC] Executing: 'CREATE TABLE human (sno INT, name VARCHAR(255));'
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: car
+  Columns: sno int, name varchar(255), cc int, price decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: human
+  Columns: sno int, name varchar(255)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: car
+  Columns: sno int, name varchar(255), cc int, price decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: human
+  Columns: sno int, name varchar(255)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+=== Raw LLM Response ===
+["SHOW TABLES"]
+=== Cleaned LLM Response ===
+["SHOW TABLES"]
+=== END ===
+[PARSE] json.loads direct SUCCESS: 1 queries
+[PARSE] Query 1: 'SHOW TABLES'
+
+=== Parsed Queries (1) ===
+
+--- Query 1 ---
+SHOW TABLES
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SHOW TABLES'
+
+[EXEC] Executing: 'SHOW TABLES'
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: car
+  Columns: sno int, name varchar(255), cc int, price decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: human
+  Columns: sno int, name varchar(255)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+=== Raw LLM Response ===
+["DROP TABLE IF EXISTS human"]
+=== Cleaned LLM Response ===
+["DROP TABLE IF EXISTS human"]
+=== END ===
+[PARSE] json.loads direct SUCCESS: 1 queries
+[PARSE] Query 1: 'DROP TABLE IF EXISTS human'
+
+=== Parsed Queries (1) ===
+
+--- Query 1 ---
+DROP TABLE IF EXISTS human
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'DROP TABLE IF EXISTS human'
+
+[EXEC] Executing: 'DROP TABLE IF EXISTS human'
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: car
+  Columns: sno int, name varchar(255), cc int, price decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+=== Raw LLM Response ===
+[]
+=== Cleaned LLM Response ===
+[]
+=== END ===
+[PARSE] Regex found array pattern, trying json.loads
+[PARSE] FALLBACK - treating as single query: '[]'
+
+=== Parsed Queries (1) ===
+
+--- Query 1 ---
+[]
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'[]'
+
+[EXEC] Executing: '[]'
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: car
+  Columns: sno int, name varchar(255), cc int, price decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: car
+  Columns: sno int, name varchar(255), cc int, price decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: car
+  Columns: sno int, name varchar(255), cc int, price decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+=== Raw LLM Response ===
+["SHOW TABLES"]
+=== Cleaned LLM Response ===
+["SHOW TABLES"]
+=== END ===
+[PARSE] json.loads direct SUCCESS: 1 queries
+[PARSE] Query 1: 'SHOW TABLES'
+
+=== Parsed Queries (1) ===
+
+--- Query 1 ---
+SHOW TABLES
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SHOW TABLES'
+
+[EXEC] Executing: 'SHOW TABLES'
+=== Raw LLM Response ===
+["SELECT * FROM bennett"]
+=== Cleaned LLM Response ===
+["SELECT * FROM bennett"]
+=== END ===
+[PARSE] json.loads direct SUCCESS: 1 queries
+[PARSE] Query 1: 'SELECT * FROM bennett'
+
+=== Parsed Queries (1) ===
+
+--- Query 1 ---
+SELECT * FROM bennett
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SELECT * FROM bennett'
+
+[EXEC] Executing: 'SELECT * FROM bennett'
+=== Raw LLM Response ===
+["SELECT * FROM tennis"]
+=== Cleaned LLM Response ===
+["SELECT * FROM tennis"]
+=== END ===
+[PARSE] json.loads direct SUCCESS: 1 queries
+[PARSE] Query 1: 'SELECT * FROM tennis'
+
+=== Parsed Queries (1) ===
+
+--- Query 1 ---
+SELECT * FROM tennis
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SELECT * FROM tennis'
+
+[EXEC] Executing: 'SELECT * FROM tennis'
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: car
+  Columns: sno int, name varchar(255), cc int, price decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: car
+  Columns: sno int, name varchar(255), cc int, price decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SELECT * FROM bennett'
+
+[EXEC] Executing: 'SELECT * FROM bennett'
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SELECT * FROM car'
+
+[EXEC] Executing: 'SELECT * FROM car'
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SELECT * FROM employee'
+
+[EXEC] Executing: 'SELECT * FROM employee'
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SELECT * FROM tennis'
+
+[EXEC] Executing: 'SELECT * FROM tennis'
+=== Raw LLM Response ===
+[]
+=== Cleaned LLM Response ===
+[]
+=== END ===
+[PARSE] Regex found array pattern, trying json.loads
+[PARSE] FALLBACK - treating as single query: '[]'
+
+=== Parsed Queries (1) ===
+
+--- Query 1 ---
+[]
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'[]'
+
+[EXEC] Executing: '[]'
+=== Raw LLM Response ===
+["INSERT INTO bennett (sno, name, salary) VALUES (1, 'Alice', 50000.00), (2, 'Bob', 60000.00), (3, 'Charlie', 55000.00), (4, 'Diana', 62000.00)","SELECT * FROM bennett"]
+=== Cleaned LLM Response ===
+["INSERT INTO bennett (sno, name, salary) VALUES (1, 'Alice', 50000.00), (2, 'Bob', 60000.00), (3, 'Charlie', 55000.00), (4, 'Diana', 62000.00)","SELECT * FROM bennett"]
+=== END ===
+[PARSE] json.loads direct SUCCESS: 2 queries
+[PARSE] Query 1: "INSERT INTO bennett (sno, name, salary) VALUES (1, 'Alice', 50000.00), (2, 'Bob', 60000.00), (3, 'Charlie', 55000.00), (4, 'Diana', 62000.00)"
+[PARSE] Query 2: 'SELECT * FROM bennett'
+
+=== Parsed Queries (2) ===
+
+--- Query 1 ---
+INSERT INTO bennett (sno, name, salary) VALUES (1, 'Alice', 50000.00), (2, 'Bob', 60000.00), (3, 'Charlie', 55000.00), (4, 'Diana', 62000.00)
+
+--- Query 2 ---
+SELECT * FROM bennett
+
+=== Executing Queries ===
+
+--- Query 1 ---
+"INSERT INTO bennett (sno, name, salary) VALUES (1, 'Alice', 50000.00), (2, 'Bob', 60000.00), (3, 'Charlie', 55000.00), (4, 'Diana', 62000.00)"
+
+--- Query 2 ---
+'SELECT * FROM bennett'
+
+[EXEC] Executing: "INSERT INTO bennett (sno, name, salary) VALUES (1, 'Alice', 50000.00), (2, 'Bob', 60000.00), (3, 'Charlie', 55000.00), (4, 'Diana', 62000.00)"
+
+[EXEC] Executing: 'SELECT * FROM bennett'
+=== Raw LLM Response ===
+["DESCRIBE bennett;"]
+=== Cleaned LLM Response ===
+["DESCRIBE bennett;"]
+=== END ===
+[PARSE] json.loads direct SUCCESS: 1 queries
+[PARSE] Query 1: 'DESCRIBE bennett;'
+
+=== Parsed Queries (1) ===
+
+--- Query 1 ---
+DESCRIBE bennett;
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'DESCRIBE bennett;'
+
+[EXEC] Executing: 'DESCRIBE bennett;'
+=== Raw LLM Response ===
+["SELECT * FROM bennett"]
+=== Cleaned LLM Response ===
+["SELECT * FROM bennett"]
+=== END ===
+[PARSE] json.loads direct SUCCESS: 1 queries
+[PARSE] Query 1: 'SELECT * FROM bennett'
+
+=== Parsed Queries (1) ===
+
+--- Query 1 ---
+SELECT * FROM bennett
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SELECT * FROM bennett'
+
+[EXEC] Executing: 'SELECT * FROM bennett'
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SELECT * FROM bennett'
+
+[EXEC] Executing: 'SELECT * FROM bennett'
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SELECT * FROM car'
+
+[EXEC] Executing: 'SELECT * FROM car'
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SELECT * FROM employee'
+
+[EXEC] Executing: 'SELECT * FROM employee'
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SELECT * FROM tennis'
+
+[EXEC] Executing: 'SELECT * FROM tennis'

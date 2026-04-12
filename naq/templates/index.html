@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DATABASE RTPS</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
+        :root {
+            --bg-base: #050510;
+            --surface-color: rgba(20, 20, 40, 0.6);
+            --surface-hover: rgba(40, 40, 70, 0.7);
+            --primary: #8b5cf6;
+            --primary-hover: #7c3aed;
+            --accent: #22d3ee;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --danger: #ef4444;
+            --code-bg: #0b0f19;
+            --border: rgba(255, 255, 255, 0.08);
+            --glow: 0 0 20px rgba(139, 92, 246, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(34, 211, 238, 0.15), transparent 25%);
+            background-attachment: fixed;
+        }
+
+        /* Ambient glowing background blobs */
+        .ambient-blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            z-index: -1;
+            animation: float 20s infinite alternate;
+        }
+
+        .blob-1 {
+            top: -10%;
+            left: -10%;
+            width: 40vw;
+            height: 40vw;
+            background: var(--primary);
+        }
+
+        .blob-2 {
+            bottom: -10%;
+            right: -10%;
+            width: 30vw;
+            height: 30vw;
+            background: var(--accent);
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(5%, 10%) scale(1.1);
+            }
+        }
+
+        .header {
+            padding: 1.5rem 3rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(5, 5, 16, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .brand {
+            font-size: 1.75rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #a855f7, #22d3ee);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(168, 85, 247, 0.4);
+        }
+
+        .db-badge {
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            background: rgba(34, 211, 238, 0.1);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--accent);
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.2);
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 3rem 2rem;
+            gap: 2rem;
+            z-index: 1;
+        }
+
+        .prompt-container {
+            position: relative;
+            transform: translateY(0);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .prompt-textarea {
+            width: 100%;
+            background: var(--surface-color);
+            background-image: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            padding-right: 1.5rem;
+            padding-bottom: 5rem;
+            /* Space for button group */
+            color: var(--text-main);
+            font-size: 1.1rem;
+            font-family: inherit;
+            resize: none;
+            min-height: 140px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .prompt-textarea:focus {
+            outline: none;
+            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: var(--glow), 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            background: rgba(20, 20, 40, 0.8);
+        }
+
+        .prompt-textarea::placeholder {
+            color: rgba(148, 163, 184, 0.5);
+        }
+
+        .button-group {
+            position: absolute;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-family: inherit;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 211, 238, 0.5);
+        }
+
+        .submit-btn.outline-btn {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            box-shadow: none;
+        }
+
+        .submit-btn.outline-btn:hover {
+            background: rgba(34, 211, 238, 0.1);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: translateY(0);
+        }
+
+        .results-area {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            border-radius: 16px;
+            background: var(--surface-color);
+            padding: 2rem;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+        }
+
+        .results-area.hidden {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent);
+            padding: 1rem;
+            background: rgba(34, 211, 238, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(34, 211, 238, 0.1);
+        }
+
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s cubic-bezier(0.5, 0.1, 0.4, 0.9) infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--code-bg);
+            margin-bottom: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th,
+        td {
+            padding: 1rem 1.25rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.03);
+            font-weight: 600;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.8rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-base);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+
+        /* CREDITS SECTION STYLES */
+        .credits-section {
+            padding: 4rem 2rem 2rem 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            margin-top: auto;
+        }
+
+        .credits-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .credits-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .cards-container {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .student-card {
+            background: var(--surface-color);
+            background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            width: 280px;
+            position: relative;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            cursor: default;
+            text-align: left;
+            box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .student-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
+        }
+
+        .student-card::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+            z-index: 0;
+            transition: all 0.5s ease;
+        }
+
+        .student-card:nth-child(2)::after {
+            background: radial-gradient(circle, rgba(34, 211, 238, 0.15) 0%, transparent 70%);
+        }
+
+        .student-card:nth-child(3)::after {
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+        }
+
+        .student-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(34, 211, 238, 0.4);
+            box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.5), 0 0 25px rgba(34, 211, 238, 0.15);
+        }
+
+        .student-card:hover::before {
+            opacity: 1;
+        }
+
+        .student-card:hover::after {
+            transform: scale(1.5);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .student-card h4 {
+            font-size: 1.25rem;
+            color: var(--text-main);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .student-card .info-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .student-card .dept {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.9rem;
+            background: rgba(34, 211, 238, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .student-card .year {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+
+        .icon-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            color: var(--text-dim);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ambient-blob blob-1"></div>
+    <div class="ambient-blob blob-2"></div>
+
+    <div class="header">
+        <div class="brand">DATABASE RTPS</div>
+        <div class="db-badge">{{ db_type | upper }} Connected</div>
+    </div>
+
+    <div class="container">
+        <div class="prompt-container">
+            <textarea id="promptInput" class="prompt-textarea" placeholder="Query your Database.."
+                onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); sendPrompt(); }"></textarea>
+            <div class="button-group">
+                <button class="submit-btn outline-btn" onclick="showAll()">Show All Tables</button>
+                <button id="submitBtn" class="submit-btn" onclick="sendPrompt()">Run Query</button>
+            </div>
+        </div>
+
+        <div id="resultsArea" class="results-area hidden">
+            <div id="statusIndicator" class="status"></div>
+            <!-- Dynamic data containers injected here -->
+            <div id="dataContainer"></div>
+        </div>
+    </div>
+
+    <!-- Credits Section -->
+    <div class="credits-section">
+        <div class="credits-title">Project Developed By</div>
+        <div class="cards-container">
+            <!-- Student 1 -->
+            <div class="student-card">
+                <div class="card-content">
+                    <div class="icon-circle">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <h4>Harrison Bennett J</h4>
+                    <div class="info-row">
+                        <span class="dept">CSE - B</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="year">2nd Year</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student 2 -->
+            <div class="student-card">
+                <div class="card-content">
+                    <div class="icon-circle">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <h4>Hayagreevar G</h4>
+                    <div class="info-row">
+                        <span class="dept">CSE - B</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="year">2nd Year</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student 3 -->
+            <div class="student-card">
+                <div class="card-content">
+                    <div class="icon-circle">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <h4>Kishore Ganeshkumar</h4>
+                    <div class="info-row">
+                        <span class="dept">CSE - B</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="year">2nd Year</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = () => document.getElementById('promptInput').focus();
+
+        async function showAll() {
+            const btn = document.getElementById('submitBtn');
+            const results = document.getElementById('resultsArea');
+            const status = document.getElementById('statusIndicator');
+            const dataCont = document.getElementById('dataContainer');
+
+            btn.disabled = true;
+            results.classList.remove('hidden');
+            dataCont.innerHTML = '';
+
+            status.innerHTML = '<div class="loader"></div> <span style="color:var(--text-main)">Fetching all database tables...</span>';
+            // Slight visual pop
+            results.style.transform = 'scale(0.98)';
+            setTimeout(() => results.style.transform = 'scale(1)', 150);
+
+            try {
+                const res = await fetch('/api/show_all', { method: 'GET' });
+                const data = await res.json();
+
+                if (data.error) throw new Error(data.error);
+
+                status.innerHTML = `✓ Successfully fetched all tables.`;
+                status.style.color = '#34d399';
+                status.style.borderColor = 'rgba(52, 211, 153, 0.2)';
+                status.style.background = 'rgba(52, 211, 153, 0.05)';
+
+                renderMultiTables(data.tables, dataCont);
+
+            } catch (err) {
+                status.innerHTML = `❌ Error: <span style="color:var(--danger); font-weight:400; font-family:monospace; margin-left:0.5rem">${err.message}</span>`;
+                status.style.color = 'var(--danger)';
+                status.style.borderColor = 'rgba(239, 68, 68, 0.2)';
+                status.style.background = 'rgba(239, 68, 68, 0.05)';
+            } finally {
+                btn.disabled = false;
+                btn.onclick = () => { status.style = ''; sendPrompt(); };
+            }
+        }
+
+        async function sendPrompt() {
+            const input = document.getElementById('promptInput').value.trim();
+            if (!input) return;
+
+            const btn = document.getElementById('submitBtn');
+            const results = document.getElementById('resultsArea');
+            const status = document.getElementById('statusIndicator');
+            const dataCont = document.getElementById('dataContainer');
+
+            btn.disabled = true;
+            results.classList.remove('hidden');
+            dataCont.innerHTML = ''; // wipe old results
+
+            status.innerHTML = '<div class="loader"></div> <span style="color:var(--text-main)">Analyzing request & Executing...</span>';
+            results.style.transform = 'scale(0.98)';
+            setTimeout(() => results.style.transform = 'scale(1)', 150);
+
+            try {
+                const resGen = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question: input })
+                });
+                const dataGen = await resGen.json();
+                if (dataGen.error) throw new Error(dataGen.error);
+
+                const queries = dataGen.queries;
+
+                const resExec = await fetch('/api/execute', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ queries: queries })
+                });
+                const dataExec = await resExec.json();
+
+                if (dataExec.error) throw new Error(dataExec.error);
+
+                status.innerHTML = `✓ Executed successfully. <span style="color:var(--text-main); font-weight:400; margin-left:0.5rem">${dataExec.row_count} row(s) affected or returned.</span>`;
+                status.style.color = '#34d399';
+                status.style.borderColor = 'rgba(52, 211, 153, 0.2)';
+                status.style.background = 'rgba(52, 211, 153, 0.05)';
+
+                if (dataExec.columns && dataExec.columns.length > 0) {
+                    const wrap = document.createElement('div');
+                    wrap.className = 'table-container';
+                    const table = document.createElement('table');
+
+                    const thead = document.createElement('thead');
+                    thead.innerHTML = '<tr>' + dataExec.columns.map(c => `<th>${c}</th>`).join('') + '</tr>';
+
+                    const tbody = document.createElement('tbody');
+                    tbody.innerHTML = dataExec.rows.map(row =>
+                        '<tr>' + row.map(cell => `<td>${cell !== null ? cell : '<em>null</em>'}</td>`).join('') + '</tr>'
+                    ).join('');
+
+                    table.appendChild(thead);
+                    table.appendChild(tbody);
+                    wrap.appendChild(table);
+                    dataCont.appendChild(wrap);
+                }
+            } catch (err) {
+                status.innerHTML = `❌ Error: <span style="color:var(--danger); font-weight:400; font-family:monospace; margin-left:0.5rem">${err.message}</span>`;
+                status.style.color = 'var(--danger)';
+                status.style.borderColor = 'rgba(239, 68, 68, 0.2)';
+                status.style.background = 'rgba(239, 68, 68, 0.05)';
+            } finally {
+                btn.disabled = false;
+                btn.onclick = () => { status.style = ''; sendPrompt(); };
+            }
+        }
+
+        // Helper to render multiple tables for Show All Data
+        function renderMultiTables(tablesObj, containerElement) {
+            for (const [tName, tData] of Object.entries(tablesObj)) {
+                // Outer container for table
+                const outer = document.createElement('div');
+                outer.className = 'table-container';
+                outer.style.marginBottom = '2rem';
+
+                // Title
+                const title = document.createElement('h3');
+                title.textContent = `Table: ${tName}`;
+                title.style.color = 'var(--text-main)';
+                title.style.padding = '1rem 1.25rem';
+                title.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+                title.style.background = 'rgba(0,0,0,0.3)';
+                title.style.textTransform = 'uppercase';
+                title.style.fontSize = '0.9rem';
+                title.style.letterSpacing = '1px';
+                title.style.display = 'flex';
+                title.style.alignItems = 'center';
+                title.style.gap = '0.5rem';
+
+                // Add small DB icon
+                title.innerHTML = `<svg width="16" height="16" fill="none" stroke="var(--primary)" stroke-width="2" viewBox="0 0 24 24"><path d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>` + title.innerHTML;
+
+                outer.appendChild(title);
+
+                if (tData.error) {
+                    const err = document.createElement('p');
+                    err.style.padding = '1rem';
+                    err.style.color = 'var(--danger)';
+                    err.textContent = `❌ ${tData.error}`;
+                    outer.appendChild(err);
+                } else if (tData.columns && tData.columns.length > 0) {
+                    const table = document.createElement('table');
+                    const thead = document.createElement('thead');
+                    thead.innerHTML = '<tr>' + tData.columns.map(c => `<th>${c}</th>`).join('') + '</tr>';
+
+                    const tbody = document.createElement('tbody');
+                    tbody.innerHTML = tData.rows.map(row =>
+                        '<tr>' + row.map(cell => `<td>${cell !== null ? cell : '<em>null</em>'}</td>`).join('') + '</tr>'
+                    ).join('');
+
+                    table.appendChild(thead);
+                    table.appendChild(tbody);
+
+                    const innerScroll = document.createElement('div');
+                    innerScroll.style.overflowX = 'auto';
+                    innerScroll.appendChild(table);
+
+                    outer.appendChild(innerScroll);
+                } else {
+                    const empty = document.createElement('p');
+                    empty.style.padding = '1rem';
+                    empty.style.color = 'var(--text-dim)';
+                    empty.style.fontStyle = 'italic';
+                    empty.textContent = 'Table is currently empty.';
+                    outer.appendChild(empty);
+                }
+
+                containerElement.appendChild(outer);
+            }
+        }
+    </script>
+</body>
+
+</html>
