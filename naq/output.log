@@ -1,120 +1,382 @@
 Table: bennett
-  Columns: sno int, ach varchar(255)
-Table: pen
-  Columns: name varchar(255), cost decimal(10,2)
-Table: sports
-  Columns: id int [PK], name varchar(255), followers int
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+Table: user
+  Columns: name varchar(20)
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+Table: user
+  Columns: name varchar(20)
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+Table: user
+  Columns: name varchar(20)
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+Table: user
+  Columns: name varchar(20)
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+Table: user
+  Columns: name varchar(20)
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+Table: user
+  Columns: name varchar(20)
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+Table: user
+  Columns: name varchar(20)
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+Table: user
+  Columns: name varchar(20)
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+Table: user
+  Columns: name varchar(20)
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+Table: user
+  Columns: name varchar(20)
+=== Raw LLM Response ===
+["SHOW TABLES"]
+=== Cleaned LLM Response ===
+["SHOW TABLES"]
+=== END ===
+[PARSE] json.loads direct SUCCESS: 1 queries
+[PARSE] Query 1: 'SHOW TABLES'
+
+=== Parsed Queries (1) ===
+
+--- Query 1 ---
+SHOW TABLES
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SHOW TABLES'
+
+[EXEC] Executing: 'SHOW TABLES'
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+Table: user
+  Columns: name varchar(20)
+=== Raw LLM Response ===
+["DROP TABLE IF EXISTS `user`"]
+=== Cleaned LLM Response ===
+["DROP TABLE IF EXISTS `user`"]
+=== END ===
+[PARSE] json.loads direct SUCCESS: 1 queries
+[PARSE] Query 1: 'DROP TABLE IF EXISTS `user`'
+
+=== Parsed Queries (1) ===
+
+--- Query 1 ---
+DROP TABLE IF EXISTS `user`
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'DROP TABLE IF EXISTS `user`'
+
+[EXEC] Executing: 'DROP TABLE IF EXISTS `user`'
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+=== Raw LLM Response ===
+["SHOW TABLES;"]
+=== Cleaned LLM Response ===
+["SHOW TABLES;"]
+=== END ===
+[PARSE] json.loads direct SUCCESS: 1 queries
+[PARSE] Query 1: 'SHOW TABLES;'
+
+=== Parsed Queries (1) ===
+
+--- Query 1 ---
+SHOW TABLES;
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SHOW TABLES;'
+
+[EXEC] Executing: 'SHOW TABLES;'
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+=== Raw LLM Response ===
+["DESCRIBE bennett"]
+=== Cleaned LLM Response ===
+["DESCRIBE bennett"]
+=== END ===
+[PARSE] json.loads direct SUCCESS: 1 queries
+[PARSE] Query 1: 'DESCRIBE bennett'
+
+=== Parsed Queries (1) ===
+
+--- Query 1 ---
+DESCRIBE bennett
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'DESCRIBE bennett'
+
+[EXEC] Executing: 'DESCRIBE bennett'
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+=== Raw LLM Response ===
+["DROP TRIGGER IF EXISTS sal_trig_ins","CREATE TRIGGER sal_trig_ins BEFORE INSERT ON bennett FOR EACH ROW BEGIN IF NEW.salary <= 500 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Salary must be above 500'; END IF; END","DROP TRIGGER IF EXISTS sal_trig_upd","CREATE TRIGGER sal_trig_upd BEFORE UPDATE ON bennett FOR EACH ROW BEGIN IF NEW.salary <= 500 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Salary must be above 500'; END IF; END"]
+=== Cleaned LLM Response ===
+["DROP TRIGGER IF EXISTS sal_trig_ins","CREATE TRIGGER sal_trig_ins BEFORE INSERT ON bennett FOR EACH ROW BEGIN IF NEW.salary <= 500 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Salary must be above 500'; END IF; END","DROP TRIGGER IF EXISTS sal_trig_upd","CREATE TRIGGER sal_trig_upd BEFORE UPDATE ON bennett FOR EACH ROW BEGIN IF NEW.salary <= 500 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Salary must be above 500'; END IF; END"]
+=== END ===
+[PARSE] json.loads direct SUCCESS: 4 queries
+[PARSE] Query 1: 'DROP TRIGGER IF EXISTS sal_trig_ins'
+[PARSE] Query 2: "CREATE TRIGGER sal_trig_ins BEFORE INSERT ON bennett FOR EACH ROW BEGIN IF NEW.salary <= 500 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Salary must be above 500'; END IF; END"
+[PARSE] Query 3: 'DROP TRIGGER IF EXISTS sal_trig_upd'
+[PARSE] Query 4: "CREATE TRIGGER sal_trig_upd BEFORE UPDATE ON bennett FOR EACH ROW BEGIN IF NEW.salary <= 500 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Salary must be above 500'; END IF; END"
+
+=== Parsed Queries (4) ===
+
+--- Query 1 ---
+DROP TRIGGER IF EXISTS sal_trig_ins
+
+--- Query 2 ---
+CREATE TRIGGER sal_trig_ins BEFORE INSERT ON bennett FOR EACH ROW BEGIN IF NEW.salary <= 500 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Salary must be above 500'; END IF; END
+
+--- Query 3 ---
+DROP TRIGGER IF EXISTS sal_trig_upd
+
+--- Query 4 ---
+CREATE TRIGGER sal_trig_upd BEFORE UPDATE ON bennett FOR EACH ROW BEGIN IF NEW.salary <= 500 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Salary must be above 500'; END IF; END
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'DROP TRIGGER IF EXISTS sal_trig_ins'
+
+--- Query 2 ---
+"CREATE TRIGGER sal_trig_ins BEFORE INSERT ON bennett FOR EACH ROW BEGIN IF NEW.salary <= 500 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Salary must be above 500'; END IF; END"
+
+--- Query 3 ---
+'DROP TRIGGER IF EXISTS sal_trig_upd'
+
+--- Query 4 ---
+"CREATE TRIGGER sal_trig_upd BEFORE UPDATE ON bennett FOR EACH ROW BEGIN IF NEW.salary <= 500 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Salary must be above 500'; END IF; END"
+
+[EXEC] Executing: 'DROP TRIGGER IF EXISTS sal_trig_ins'
+
+[EXEC] Executing: "CREATE TRIGGER sal_trig_ins BEFORE INSERT ON bennett FOR EACH ROW BEGIN IF NEW.salary <= 500 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Salary must be above 500'; END IF; END"
+
+[EXEC] Executing: 'DROP TRIGGER IF EXISTS sal_trig_upd'
+
+[EXEC] Executing: "CREATE TRIGGER sal_trig_upd BEFORE UPDATE ON bennett FOR EACH ROW BEGIN IF NEW.salary <= 500 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Salary must be above 500'; END IF; END"
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
 Table: tennis
   Columns: sno int [PK], names varchar(255)
 Table: bennett
-  Columns: sno int, ach varchar(255)
-Table: pen
-  Columns: name varchar(255), cost decimal(10,2)
-Table: sports
-  Columns: id int [PK], name varchar(255), followers int
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+=== Raw LLM Response ===
+["SHOW TABLES"]
+=== Cleaned LLM Response ===
+["SHOW TABLES"]
+=== END ===
+[PARSE] json.loads direct SUCCESS: 1 queries
+[PARSE] Query 1: 'SHOW TABLES'
+
+=== Parsed Queries (1) ===
+
+--- Query 1 ---
+SHOW TABLES
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SHOW TABLES'
+
+[EXEC] Executing: 'SHOW TABLES'
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+=== Raw LLM Response ===
+["CREATE TABLE car (sno INT, name VARCHAR(255), cc INT, price DECIMAL(10,2));"]
+=== Cleaned LLM Response ===
+["CREATE TABLE car (sno INT, name VARCHAR(255), cc INT, price DECIMAL(10,2));"]
+=== END ===
+[PARSE] json.loads direct SUCCESS: 1 queries
+[PARSE] Query 1: 'CREATE TABLE car (sno INT, name VARCHAR(255), cc INT, price DECIMAL(10,2));'
+
+=== Parsed Queries (1) ===
+
+--- Query 1 ---
+CREATE TABLE car (sno INT, name VARCHAR(255), cc INT, price DECIMAL(10,2));
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'CREATE TABLE car (sno INT, name VARCHAR(255), cc INT, price DECIMAL(10,2));'
+
+[EXEC] Executing: 'CREATE TABLE car (sno INT, name VARCHAR(255), cc INT, price DECIMAL(10,2));'
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: car
+  Columns: sno int, name varchar(255), cc int, price decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+=== Raw LLM Response ===
+["SHOW TABLES"]
+=== Cleaned LLM Response ===
+["SHOW TABLES"]
+=== END ===
+[PARSE] json.loads direct SUCCESS: 1 queries
+[PARSE] Query 1: 'SHOW TABLES'
+
+=== Parsed Queries (1) ===
+
+--- Query 1 ---
+SHOW TABLES
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'SHOW TABLES'
+
+[EXEC] Executing: 'SHOW TABLES'
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: car
+  Columns: sno int, name varchar(255), cc int, price decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
+Table: tennis
+  Columns: sno int [PK], names varchar(255)
+=== Raw LLM Response ===
+["DESCRIBE car;"]
+=== Cleaned LLM Response ===
+["DESCRIBE car;"]
+=== END ===
+[PARSE] json.loads direct SUCCESS: 1 queries
+[PARSE] Query 1: 'DESCRIBE car;'
+
+=== Parsed Queries (1) ===
+
+--- Query 1 ---
+DESCRIBE car;
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'DESCRIBE car;'
+
+[EXEC] Executing: 'DESCRIBE car;'
+Table: bennett
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: car
+  Columns: sno int, name varchar(255), cc int, price decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
 Table: tennis
   Columns: sno int [PK], names varchar(255)
 Table: bennett
-  Columns: sno int, ach varchar(255)
-Table: pen
-  Columns: name varchar(255), cost decimal(10,2)
-Table: sports
-  Columns: id int [PK], name varchar(255), followers int
+  Columns: sno int, name varchar(255), salary decimal(10,2)
+Table: car
+  Columns: sno int, name varchar(255), cc int, price decimal(10,2)
+Table: employee
+  Columns: emp_id int, emp_salary decimal(10,2)
 Table: tennis
   Columns: sno int [PK], names varchar(255)
-Table: bennett
-  Columns: sno int, ach varchar(255)
-Table: pen
-  Columns: name varchar(255), cost decimal(10,2)
-Table: sports
-  Columns: id int [PK], name varchar(255), followers int
-Table: tennis
-  Columns: sno int [PK], names varchar(255)
-Table: bennett
-  Columns: sno int, ach varchar(255)
-Table: pen
-  Columns: name varchar(255), cost decimal(10,2)
-Table: sports
-  Columns: id int [PK], name varchar(255), followers int
-Table: tennis
-  Columns: sno int [PK], names varchar(255)
-Table: bennett
-  Columns: sno int, ach varchar(255)
-Table: pen
-  Columns: name varchar(255), cost decimal(10,2)
-Table: sports
-  Columns: id int [PK], name varchar(255), followers int
-Table: tennis
-  Columns: sno int [PK], names varchar(255)
-Table: bennett
-  Columns: sno int, ach varchar(255)
-Table: pen
-  Columns: name varchar(255), cost decimal(10,2)
-Table: sports
-  Columns: id int [PK], name varchar(255), followers int
-Table: tennis
-  Columns: sno int [PK], names varchar(255)
-Table: bennett
-  Columns: sno int, ach varchar(255)
-Table: pen
-  Columns: name varchar(255), cost decimal(10,2)
-Table: sports
-  Columns: id int [PK], name varchar(255), followers int
-Table: tennis
-  Columns: sno int [PK], names varchar(255)
-Table: bennett
-  Columns: sno int, ach varchar(255)
-Table: pen
-  Columns: name varchar(255), cost decimal(10,2)
-Table: sports
-  Columns: id int [PK], name varchar(255), followers int
-Table: tennis
-  Columns: sno int [PK], names varchar(255)
-Table: bennett
-  Columns: sno int, ach varchar(255)
-Table: pen
-  Columns: name varchar(255), cost decimal(10,2)
-Table: sports
-  Columns: id int [PK], name varchar(255), followers int
-Table: tennis
-  Columns: sno int [PK], names varchar(255)
-Table: bennett
-  Columns: sno int, ach varchar(255)
-Table: pen
-  Columns: name varchar(255), cost decimal(10,2)
-Table: sports
-  Columns: id int [PK], name varchar(255), followers int
-Table: tennis
-  Columns: sno int [PK], names varchar(255)
-Table: bennett
-  Columns: sno int, ach varchar(255)
-Table: pen
-  Columns: name varchar(255), cost decimal(10,2)
-Table: sports
-  Columns: id int [PK], name varchar(255), followers int
-Table: tennis
-  Columns: sno int [PK], names varchar(255)
-Table: bennett
-  Columns: sno int, ach varchar(255)
-Table: pen
-  Columns: name varchar(255), cost decimal(10,2)
-Table: sports
-  Columns: id int [PK], name varchar(255), followers int
-Table: tennis
-  Columns: sno int [PK], names varchar(255)
-Table: tennis
-  Columns: sno int [PK], names varchar(255)
-Table: tennis
-  Columns: sno int [PK], names varchar(255)
-Table: tennis
-  Columns: sno int [PK], names varchar(255)
-Table: tennis
-  Columns: sno int [PK], names varchar(255)
-Table: tennis
-  Columns: sno int [PK], names varchar(255)
-Table: tennis
-  Columns: sno int [PK], names varchar(255)
-Table: tennis
-  Columns: sno int [PK], names varchar(255)
-Table: tennis
-  Columns: sno int [PK], names varchar(255)
+=== Raw LLM Response ===
+["DROP TRIGGER IF EXISTS check_price","CREATE TRIGGER check_price BEFORE INSERT ON car FOR EACH ROW BEGIN IF NEW.price <= 50000 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Price must be above 50000'; END IF; END;"]
+=== Cleaned LLM Response ===
+["DROP TRIGGER IF EXISTS check_price","CREATE TRIGGER check_price BEFORE INSERT ON car FOR EACH ROW BEGIN IF NEW.price <= 50000 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Price must be above 50000'; END IF; END;"]
+=== END ===
+[PARSE] json.loads direct SUCCESS: 2 queries
+[PARSE] Query 1: 'DROP TRIGGER IF EXISTS check_price'
+[PARSE] Query 2: "CREATE TRIGGER check_price BEFORE INSERT ON car FOR EACH ROW BEGIN IF NEW.price <= 50000 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Price must be above 50000'; END IF; END;"
+
+=== Parsed Queries (2) ===
+
+--- Query 1 ---
+DROP TRIGGER IF EXISTS check_price
+
+--- Query 2 ---
+CREATE TRIGGER check_price BEFORE INSERT ON car FOR EACH ROW BEGIN IF NEW.price <= 50000 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Price must be above 50000'; END IF; END;
+
+=== Executing Queries ===
+
+--- Query 1 ---
+'DROP TRIGGER IF EXISTS check_price'
+
+--- Query 2 ---
+"CREATE TRIGGER check_price BEFORE INSERT ON car FOR EACH ROW BEGIN IF NEW.price <= 50000 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Price must be above 50000'; END IF; END;"
+
+[EXEC] Executing: 'DROP TRIGGER IF EXISTS check_price'
+
+[EXEC] Executing: "CREATE TRIGGER check_price BEFORE INSERT ON car FOR EACH ROW BEGIN IF NEW.price <= 50000 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Price must be above 50000'; END IF; END;"

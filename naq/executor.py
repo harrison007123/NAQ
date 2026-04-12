@@ -1,3 +1,5 @@
+from typing import List, Union
+
 import pandas as pd
 from rich.console import Console
 from naq.db import get_db_type
@@ -44,10 +46,29 @@ def _execute_mysql(conn, statements: list) -> QueryResult:
     had_rows = False
     original_sql = "; ".join(statements)
 
+    # Log the actual queries for debugging
+    try:
+        with open("output.log", "a") as f:
+            f.write("\n=== Executing Queries ===\n")
+            for i, q in enumerate(statements):
+                f.write(f"\n--- Query {i+1} ---\n{repr(q)}\n")
+    except Exception:
+        pass
+
     cursor = conn.cursor(dictionary=True)
     try:
         for query in statements:
-            cursor.execute(query)
+            clean_q = query.strip()
+            # Skip empty queries
+            if not clean_q:
+                continue
+            log_msg = f"Executing: {repr(clean_q[:200])}"
+            try:
+                with open("output.log", "a") as f:
+                    f.write(f"\n[EXEC] {log_msg}\n")
+            except Exception:
+                pass
+            cursor.execute(clean_q)
             if cursor.with_rows:
                 rows = cursor.fetchall()
                 if rows:
@@ -98,8 +119,12 @@ def _execute_postgresql(conn, statements: list) -> QueryResult:
     return QueryResult(sql=original_sql, df=summary, row_count=total_affected)
 
 
-def execute_query(conn, sql: str) -> QueryResult:
-    statements = _split_statements(sql)
+def execute_query(conn, sql: Union[str, List[str]]) -> QueryResult:
+    if isinstance(sql, list):
+        statements = [s.strip() for s in sql if s.strip()]
+    else:
+        statements = _split_statements(sql)
+
     if not statements:
         raise RuntimeError("No executable SQL statements found in the LLM response.")
 
@@ -110,3 +135,4 @@ def execute_query(conn, sql: str) -> QueryResult:
         return _execute_postgresql(conn, statements)
     else:
         raise RuntimeError(f"Unsupported database type: {db_type}")
+

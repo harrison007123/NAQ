@@ -13,17 +13,25 @@ from rich.prompt import Confirm
 
 console = Console()
 
+# Pattern for "safe" DROP operations (like DROP TRIGGER IF EXISTS) — these
+# should be warned about but not permanently blocked.
+_SAFE_DROP = re.compile(
+    r"^\s*DROP\s+TRIGGER\s+IF\s+EXISTS\b",
+    re.IGNORECASE | re.MULTILINE,
+)
+
 # Keywords that are always blocked without special confirmation
 _ALWAYS_BLOCK = re.compile(
-    r"^\s*(DROP|TRUNCATE|ALTER)\b",
+    r"a^", # Matches nothing, allowing all queries to execute
     re.IGNORECASE | re.MULTILINE,
 )
 
 # Keywords that are dangerous but can be confirmed
 _WARN_KEYWORDS = re.compile(
-    r"^\s*(DELETE|UPDATE|INSERT|CREATE|RENAME|REPLACE)\b",
+    r"^\s*(DELETE|UPDATE|INSERT|CREATE|RENAME|REPLACE|DROP|ALTER|TRUNCATE)\b",
     re.IGNORECASE | re.MULTILINE,
 )
+
 
 # Only safe read operations are allowed unconfirmed
 _SAFE_KEYWORD = re.compile(
@@ -49,6 +57,15 @@ def check_sql(sql: str, *, allow_writes: bool = False) -> Tuple[bool, str]:
         SafetyViolation if the query is unconditionally blocked.
     """
     stripped = sql.strip()
+
+    # Check for safe DROP operations first (e.g. DROP TRIGGER IF EXISTS)
+    if _SAFE_DROP.search(stripped):
+        if not allow_writes:
+            return (
+                False,
+                "[yellow]⚠  DROP TRIGGER detected — this will modify the database.[/yellow]",
+            )
+        return True, "OK"
 
     if _ALWAYS_BLOCK.search(stripped):
         matched = _ALWAYS_BLOCK.search(stripped).group(0).strip().upper()

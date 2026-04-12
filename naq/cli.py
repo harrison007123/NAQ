@@ -19,7 +19,7 @@ from naq import executor
 from naq import safety
 from naq import utils
 from naq import db
-from naq import analytics
+#from naq import analytics
 
 def log(message):
     with open("output.log", "a") as f:
@@ -121,34 +121,27 @@ def _run_nl_query(question: str, cfg: dict, conn, schema_text: str) -> None:
             "Generating SQL query...",
         ])
 
-        sql = ai_engine.generate_sql(cfg, schema_text, question)
-        if not sql or not str(sql).strip():
+        queries = ai_engine.generate_sql(cfg, schema_text, question)
+        if not queries:
             console.print("  [yellow]⚠  The LLM returned an empty response. Please rephrase.[/yellow]")
             return
 
-        console.print(
-            Panel(
-                Syntax(sql, "sql", theme="monokai", line_numbers=False, word_wrap=True),
-                title="[bold dim]Generated SQL[/bold dim]",
-                border_style="bright_black",
-                padding=(0, 1),
-            )
-        )
-        console.print()
 
+
+        # Safety check on each query
         try:
-            should_proceed = safety.validate_and_confirm(sql)
+            for q in queries:
+                should_proceed = safety.validate_and_confirm(q)
+                if not should_proceed:
+                    console.print("  [dim]Query cancelled.[/dim]")
+                    return
         except safety.SafetyViolation as exc:
             console.print(f"\n  {exc}\n")
             return
 
-        if not should_proceed:
-            console.print("  [dim]Query cancelled.[/dim]")
-            return
-
         thinking_steps(["Executing query..."])
 
-        result = executor.execute_query(conn, sql)
+        result = executor.execute_query(conn, queries)
 
         utils.render_dataframe(result.df, title=f"")#Results — {question[:60]}
 
@@ -162,6 +155,7 @@ def _run_nl_query(question: str, cfg: dict, conn, schema_text: str) -> None:
     except Exception as exc:
         console.print(f"\n  [bold red]✗ Unexpected error:[/bold red] {exc}\n")
         console.print(Rule(style="red"))
+
 
 
 def _main_loop(cfg: dict, conn) -> None:
